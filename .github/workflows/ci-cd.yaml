@@ -23,4 +23,4 @@ jobs:
       run: docker run --rm thirupathireddy22/my-fastapi-app:latest python -m unittest unit.py
 
     - name: Deploy Docker image
-      run: docker push thirupathireddy22/fastapi-app:latest
+      run: docker push thirupathireddy22/my-fastapi-app:latest
