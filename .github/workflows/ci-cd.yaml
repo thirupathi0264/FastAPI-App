@@ -23,6 +23,7 @@ jobs:
 
     - name: Build the Docker image
       run: docker build -t my-fastapi-app .
+      working-directory: /home/support/NEW_FOLDER/New_Folder5
 
     - name: Log in to Docker Hub
       env:
