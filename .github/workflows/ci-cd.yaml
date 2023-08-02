@@ -10,30 +10,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout the code
+    - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.x
-
-    - name: Install dependencies
-      run: pip install -r requirements.txt
-
-    - name: Build the Docker image
-      run: docker build -t my-fastapi-app .
-      working-directory: /home/support/NEW_FOLDER/New_Folder5
-
     - name: Log in to Docker Hub
-      env:
-        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-        DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
-      run: |
-        echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin
+      run: docker login -u your-dockerhub-username -p your-dockerhub-token
 
-    - name: Push the Docker image to Docker Hub
-      run: |
-        docker tag my-fastapi-app $DOCKERHUB_USERNAME/my-fastapi-app
-        docker push $DOCKERHUB_USERNAME/my-fastapi-app
+    - name: Pull Docker image
+      run: docker pull your-dockerhub-username/my-fastapi-app:latest
 
+    - name: Run unit tests
+      run: docker run --rm your-dockerhub-username/my-fastapi-app python -m unittest unit.py
+
+    - name: Deploy Docker image
+      run: |
+        docker tag your-dockerhub-username/my-fastapi-app:latest your-dockerhub-username/my-fastapi-app:main
+        docker push your-dockerhub-username/my-fastapi-app:main
