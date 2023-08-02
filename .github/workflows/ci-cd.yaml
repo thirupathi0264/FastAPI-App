@@ -14,18 +14,15 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Log in to Docker Hub
-      env:
-        DOCKERHUB_USERNAME: thirupathireddy22/fastapi-app
-        DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-      run: echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USERNAME --password-stdin
+      run: docker login -u thirupathireddy22 -p ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Pull Docker image
-      run: docker pull thirupathireddy22/fastapi-app:latest
+      run: docker pull my-fastapi-app
 
     - name: Run unit tests
-      run: docker run --rm thirupathireddy22/fastapi-app python -m unittest unit.py
+      run: docker run --rm my-fastapi-app python -m unittest unit.py
 
     - name: Deploy Docker image
       run: |
-        docker tag thirupathireddy22/fastapi-app:latest thirupathireddy22/fastapi-app:main
+        docker tag my-fastapi-app thirupathireddy22/fastapi-app:main
         docker push thirupathireddy22/fastapi-app:main
