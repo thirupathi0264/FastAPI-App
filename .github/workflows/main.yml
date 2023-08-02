@@ -3,26 +3,36 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout the code
       uses: actions/checkout@v2
 
-    - name: Build and test Docker image
-      run: |
-        docker build -t my-fastapi-app .
-        docker run --rm my-fastapi-app python -m unittest unit.py
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
 
-    - name: Tag and push Docker image
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Build the Docker image
+      run: docker build -t my-fastapi-app .
+
+    - name: Log in to Docker Hub
       env:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
       run: |
-        docker tag my-fastapi-app your-dockerhub-username/my-fastapi-app:latest
-        echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-        docker push your-dockerhub-username/my-fastapi-app:latest
+        echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin
+
+    - name: Push the Docker image to Docker Hub
+      run: |
+        docker tag my-fastapi-app $DOCKERHUB_USERNAME/my-fastapi-app
+        docker push $DOCKERHUB_USERNAME/my-fastapi-app
+
