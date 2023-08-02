@@ -16,7 +16,7 @@ jobs:
       run: docker login -u thirupathireddy22 -p ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Pull Docker image
-      run: docker pull my-fastapi-app:latest
+      run: docker pull thirupathireddy22/fastapi-app
 
     - name: Run unit tests
       run: docker run --rm my-fastapi-app:latest python -m unittest unit.py
