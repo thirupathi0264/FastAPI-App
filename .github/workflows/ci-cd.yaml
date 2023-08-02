@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,9 +20,7 @@ jobs:
       run: docker pull thirupathireddy22/fastapi-app
 
     - name: Run unit tests
-      run: docker run --rm my-fastapi-app:latest python -m unittest unit.py
+      run: docker run --rm thirupathireddy22/fastapi-app python -m unittest unit.py
 
     - name: Deploy Docker image
-      run: |
-        docker tag my-fastapi-app:latest thirupathireddy22/fastapi-app:main
-        docker push thirupathireddy22/fastapi-app:main
+      run: docker push thirupathireddy22/fastapi-app:main
