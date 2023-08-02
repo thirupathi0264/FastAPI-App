@@ -14,7 +14,10 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Log in to Docker Hub
-      run: echo $DOCKERHUB_TOKEN | docker login -u dckr_pat_o5_QMFNvJqIvDonbM7mb4gG0-5k-app --password-stdin
+      env:
+        DOCKERHUB_USERNAME: thirupathireddy22/fastapi-app
+        DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      run: echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USERNAME --password-stdin
 
     - name: Pull Docker image
       run: docker pull thirupathireddy22/fastapi-app:latest
